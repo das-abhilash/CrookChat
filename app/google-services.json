@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "491082986999",
+    "firebase_url": "https://crookchat-4133d.firebaseio.com",
+    "project_id": "crookchat-4133d",
+    "storage_bucket": "crookchat-4133d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491082986999:android:4b052a81303180f1",
+        "android_client_info": {
+          "package_name": "com.crookchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "491082986999-u45bpqhpn3u11170u1r93jln52su3da3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvi542Mae2NsPHFYAST2txKPz1lfdplPg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
