@@ -20,8 +20,6 @@ public class Media implements Parcelable {
     private String type;
     private List<Like> likes;
     private List<Comment> comments;
-    private String profile_photo = "";
-    private String username = "";
 
 
     public Media() {
@@ -165,25 +163,7 @@ public class Media implements Parcelable {
                 ", user_id='" + user_id + '\'' +
                 ", tags='" + tags + '\'' +
                 ", likes=" + likes + '\'' +
-                ", profile_photo=" + profile_photo + '\'' +
-                ", username=" + username + '\'' +
                 ", type=" + type +
                 '}';
-    }
-
-    public String getProfile_photo() {
-        return profile_photo;
-    }
-
-    public void setProfile_photo(String profile_photo) {
-        this.profile_photo = profile_photo;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 }

@@ -25,6 +25,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crookchat.Home.HomeActivity;
+import com.crookchat.Profile.ProfileActivity;
+import com.crookchat.R;
+import com.crookchat.models.Comment;
+import com.crookchat.models.Like;
+import com.crookchat.models.Media;
+import com.crookchat.models.User;
+import com.crookchat.models.UserAccountSettings;
+import com.crookchat.videoPlayer.VideoPlayActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,15 +56,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import com.crookchat.Home.HomeActivity;
-import com.crookchat.Profile.ProfileActivity;
-import com.crookchat.R;
-import com.crookchat.models.Comment;
-import com.crookchat.models.Like;
-import com.crookchat.models.Media;
-import com.crookchat.models.User;
-import com.crookchat.models.UserAccountSettings;
-import com.crookchat.videoPlayer.VideoPlayActivity;
 
 /**
  * Created by User on 9/22/2017.
@@ -431,37 +431,55 @@ public class MainfeedListAdapter extends ArrayAdapter<Media> {
 
         // currentUsername = singleSnapshot.getValue(UserAccountSettings.class).getUsername();
 
-        holder.username.setText(holder.media.getUsername());
-        holder.username.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: navigating to profile of: " +
-                        holder.user.getUsername());
+        //get the profile image and username
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        Query query = reference
+                .child(mContext.getString(R.string.dbname_user_account_settings))
+                .orderByChild(mContext.getString(R.string.field_user_id))
+                .equalTo(getItem(position).getUser_id());
 
-                Intent intent = new Intent(mContext, ProfileActivity.class);
-                intent.putExtra(mContext.getString(R.string.calling_activity),
-                        mContext.getString(R.string.home_activity));
-                intent.putExtra(mContext.getString(R.string.intent_user), holder.user);
-                mContext.startActivity(intent);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+                    holder.username.setText(singleSnapshot.getValue(UserAccountSettings.class).getUsername());
+                    imageLoader.displayImage(singleSnapshot.getValue(UserAccountSettings.class).getProfile_photo(),
+                            holder.mprofileImage);
+                    holder.username.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d(TAG, "onClick: navigating to profile of: " +
+                                    holder.user.getUsername());
+
+                            Intent intent = new Intent(mContext, ProfileActivity.class);
+                            intent.putExtra(mContext.getString(R.string.calling_activity),
+                                    mContext.getString(R.string.home_activity));
+                            intent.putExtra(mContext.getString(R.string.intent_user), holder.user);
+                            mContext.startActivity(intent);
+                        }
+                    });
+
+                    holder.mprofileImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.d(TAG, "onClick: navigating to profile of: " +
+                                    holder.user.getUsername());
+
+                            Intent intent = new Intent(mContext, ProfileActivity.class);
+                            intent.putExtra(mContext.getString(R.string.calling_activity),
+                                    mContext.getString(R.string.home_activity));
+                            intent.putExtra(mContext.getString(R.string.intent_user), holder.user);
+                            mContext.startActivity(intent);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
-
-        imageLoader.displayImage(holder.media.getProfile_photo(),
-                holder.mprofileImage);
-        holder.mprofileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: navigating to profile of: " +
-                        holder.user.getUsername());
-
-                Intent intent = new Intent(mContext, ProfileActivity.class);
-                intent.putExtra(mContext.getString(R.string.calling_activity),
-                        mContext.getString(R.string.home_activity));
-                intent.putExtra(mContext.getString(R.string.intent_user), holder.user);
-                mContext.startActivity(intent);
-            }
-        });
-
 
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
